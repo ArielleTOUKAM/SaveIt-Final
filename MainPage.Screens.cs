@@ -1309,7 +1309,9 @@ public partial class MainPage
                         StrokeShape = new RoundRectangle { CornerRadius = 21 },
                         Content = new Image
                         {
-                            Source = "arielle_avatar.jpg",
+                            Source = item.ReporterName.Contains("Arielle", StringComparison.OrdinalIgnoreCase)
+                                ? "arielle.jpeg"
+                                : "arielle_avatar.jpg",
                             Aspect = Aspect.AspectFill,
                             WidthRequest = 42,
                             HeightRequest = 42
@@ -1882,7 +1884,13 @@ public partial class MainPage
                         HeightRequest = 38,
                         BackgroundColor = Color.FromArgb("#4A90E2"),
                         StrokeShape = new RoundRectangle { CornerRadius = 19 },
-                        Content = Text("JD", 13, true, "#FFFFFF")
+                        Content = new Image
+                        {
+                            Source = "arielle_avatar.jpg",
+                            Aspect = Aspect.AspectFill,
+                            WidthRequest = 38,
+                            HeightRequest = 38
+                        }
                     },
                     new VerticalStackLayout
                     {
@@ -2023,7 +2031,13 @@ public partial class MainPage
                         HeightRequest = 38,
                         BackgroundColor = Color.FromArgb("#DDEAF9"),
                         StrokeShape = new RoundRectangle { CornerRadius = 19 },
-                        Content = Text("TK", 13, true, FigmaBlue)
+                        Content = new Image
+                        {
+                            Source = "arielle_avatar.jpg",
+                            Aspect = Aspect.AspectFill,
+                            WidthRequest = 38,
+                            HeightRequest = 38
+                        }
                     },
                     new VerticalStackLayout
                     {
@@ -2133,9 +2147,14 @@ public partial class MainPage
         {
             WidthRequest = 32,
             HeightRequest = 32,
-            BackgroundColor = Color.FromArgb(FigmaLightBlue),
             StrokeShape = new RoundRectangle { CornerRadius = 16 },
-            Content = Text("M", 12, true, FigmaBlue)
+            Content = new Image
+            {
+                Source = "arielle_avatar.jpg",
+                Aspect = Aspect.AspectFill,
+                WidthRequest = 32,
+                HeightRequest = 32
+            }
         };
 
         var topBar = new Grid
@@ -2247,7 +2266,19 @@ public partial class MainPage
                     Spacing = 6,
                     Children =
                     {
-                        new Border { WidthRequest = 20, HeightRequest = 20, BackgroundColor = Color.FromArgb(FigmaLightBlue), StrokeShape = new RoundRectangle { CornerRadius = 10 }, Content = Text("M", 9, true, FigmaBlue) },
+                        new Border
+                        {
+                            WidthRequest = 20,
+                            HeightRequest = 20,
+                            StrokeShape = new RoundRectangle { CornerRadius = 10 },
+                            Content = new Image
+                            {
+                                Source = "arielle_avatar.jpg",
+                                Aspect = Aspect.AspectFill,
+                                WidthRequest = 20,
+                                HeightRequest = 20
+                            }
+                        },
                         new VerticalStackLayout
                         {
                             Spacing = 2,
@@ -2294,7 +2325,19 @@ public partial class MainPage
                     Spacing = 6,
                     Children =
                     {
-                        new Border { WidthRequest = 20, HeightRequest = 20, BackgroundColor = Color.FromArgb(FigmaLightBlue), StrokeShape = new RoundRectangle { CornerRadius = 10 }, Content = Text("M", 9, true, FigmaBlue) },
+                        new Border
+                        {
+                            WidthRequest = 20,
+                            HeightRequest = 20,
+                            StrokeShape = new RoundRectangle { CornerRadius = 10 },
+                            Content = new Image
+                            {
+                                Source = "arielle_avatar.jpg",
+                                Aspect = Aspect.AspectFill,
+                                WidthRequest = 20,
+                                HeightRequest = 20
+                            }
+                        },
                         new VerticalStackLayout
                         {
                             Spacing = 2,
@@ -2463,7 +2506,7 @@ public partial class MainPage
                         BackgroundColor = Color.FromArgb(FigmaLightBlue),
                         Content = new Image
                         {
-                            Source = "arielle_avatar.jpg",
+                            Source = "arielle.jpeg",
                             Aspect = Aspect.AspectFill,
                             WidthRequest = 76,
                             HeightRequest = 76
