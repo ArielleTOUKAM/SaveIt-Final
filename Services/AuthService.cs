@@ -12,13 +12,13 @@ public class AuthService : IAuthService
         _currentUser = new UserProfile
         {
             Id = "user_1",
-            FullName = "Arielle Seumegne",
+            FullName = "Arielle T.",
             Email = "arielle@gmail.com",
             Role = "Student / Campus Community",
             LostReportsCount = 2,
-            FoundReportsCount = 3,
-            ActiveMatchesCount = 2,
-            ReunitedCount = 1
+            FoundReportsCount = 1,
+            ReunitedCount = 1,
+            ActiveMatchesCount = 2
         };
     }
 

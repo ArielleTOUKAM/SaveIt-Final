@@ -82,10 +82,10 @@ public partial class MainPage : ContentPage
         var tabs = new (string Name, string Icon, string TabKey)[]
         {
             ("Home", "⌂", "Home"),
-            ("Reports", "▤", "Reports"),
-            ("Matches", "♡", "Matches"),
-            ("Notifications", "♧", "Notifications"),
-            ("Profile", "♙", "Profile")
+            ("Reports", "📄", "Reports"),
+            ("Matches", "⚡", "Matches"),
+            ("Notifications", "🔔", "Notifications"),
+            ("Profile", "👤", "Profile")
         };
 
         var bar = new Grid

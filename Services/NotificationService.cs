@@ -18,9 +18,9 @@ public class NotificationService : INotificationService
             new NotificationItem
             {
                 Id = "notif_1",
-                Title = "Potential Match Found!",
-                Message = "A found 'Black Leather Wallet' matches 4/4 criteria of your lost report.",
-                Timestamp = DateTime.Now.AddMinutes(-25),
+                Title = "New Match Found!",
+                Message = "A found wallet may match your Campus report. Compare the details.",
+                Timestamp = DateTime.Now.AddMinutes(-2),
                 IsRead = false,
                 Type = NotificationType.MatchAlert,
                 TargetScreen = "Matches",
@@ -29,9 +29,9 @@ public class NotificationService : INotificationService
             new NotificationItem
             {
                 Id = "notif_2",
-                Title = "New message from Jean D.",
-                Message = "Shall we meet at the campus main entrance gate at 5 PM?",
-                Timestamp = DateTime.Now.AddMinutes(-10),
+                Title = "Jean D.",
+                Message = "Hi! I found a black wallet near campus. Can you describe it?",
+                Timestamp = DateTime.Now.AddMinutes(-15),
                 IsRead = false,
                 Type = NotificationType.MessageAlert,
                 TargetScreen = "Conversation",
@@ -40,9 +40,42 @@ public class NotificationService : INotificationService
             new NotificationItem
             {
                 Id = "notif_3",
-                Title = "Report Status Update",
-                Message = "Your declaration for 'Silver Keychain & Car Key' has 1 new prospective match.",
-                Timestamp = DateTime.Now.AddHours(-3),
+                Title = "Report Updated",
+                Message = "Your report \"Black wallet — Campus\" is active.",
+                Timestamp = DateTime.Now.AddHours(-1),
+                IsRead = true,
+                Type = NotificationType.ReportUpdate,
+                TargetScreen = "Details",
+                RelatedItemId = "item_1"
+            },
+            new NotificationItem
+            {
+                Id = "notif_4",
+                Title = "Possible Match",
+                Message = "A found item shares 2 of 4 criteria with your keys report.",
+                Timestamp = DateTime.Now.AddDays(-1),
+                IsRead = true,
+                Type = NotificationType.MatchAlert,
+                TargetScreen = "Matches",
+                RelatedItemId = "item_3"
+            },
+            new NotificationItem
+            {
+                Id = "notif_5",
+                Title = "Thomas K.",
+                Message = "I left it at the lost & found desk of Galeries Bonamoussadi, you can pick it up anytime.",
+                Timestamp = DateTime.Now.AddDays(-1),
+                IsRead = true,
+                Type = NotificationType.MessageAlert,
+                TargetScreen = "Conversation",
+                RelatedConversationId = "conv_2"
+            },
+            new NotificationItem
+            {
+                Id = "notif_6",
+                Title = "Reminder",
+                Message = "Your report \"Silver Keys, Opera\" hasn't been updated in 7 days. Review it to keep it active.",
+                Timestamp = DateTime.Now.AddDays(-1),
                 IsRead = true,
                 Type = NotificationType.ReportUpdate,
                 TargetScreen = "Details",

@@ -18,7 +18,7 @@ public class ChatService : IChatService
             Id = "conv_1",
             OtherPartyName = "Jean D.",
             RelatedItemId = "item_1",
-            RelatedItemTitle = "Black Leather Wallet",
+            RelatedItemTitle = "Black leather wallet",
             Messages =
             [
                 new ChatMessage
@@ -26,17 +26,17 @@ public class ChatService : IChatService
                     Id = "msg_1",
                     ConversationId = "conv_1",
                     SenderName = "Jean D.",
-                    Text = "Hello! I found a black wallet near the library entrance. Is yours black leather with a silver logo?",
-                    Timestamp = DateTime.Now.AddMinutes(-45),
+                    Text = "Hello! I found a black wallet near campus. Is yours black leather?",
+                    Timestamp = DateTime.Today.AddHours(10).AddMinutes(12),
                     IsFromCurrentUser = false
                 },
                 new ChatMessage
                 {
                     Id = "msg_2",
                     ConversationId = "conv_1",
-                    SenderName = "Arielle S.",
-                    Text = "Yes, exactly! It has my student ID inside. Thank you so much for reporting it!",
-                    Timestamp = DateTime.Now.AddMinutes(-30),
+                    SenderName = "Arielle T.",
+                    Text = "Yes, with a small silver logo. Thank you!",
+                    Timestamp = DateTime.Today.AddHours(10).AddMinutes(15),
                     IsFromCurrentUser = true
                 },
                 new ChatMessage
@@ -44,9 +44,27 @@ public class ChatService : IChatService
                     Id = "msg_3",
                     ConversationId = "conv_1",
                     SenderName = "Jean D.",
-                    Text = "That matches. Shall we meet at the campus main entrance gate at 5 PM?",
-                    Timestamp = DateTime.Now.AddMinutes(-10),
+                    Text = "That matches. Shall we meet at the campus gate at 5 PM?",
+                    Timestamp = DateTime.Today.AddHours(10).AddMinutes(18),
                     IsFromCurrentUser = false
+                },
+                new ChatMessage
+                {
+                    Id = "msg_4",
+                    ConversationId = "conv_1",
+                    SenderName = "Arielle T.",
+                    Text = "Perfect, 5 PM works for me!",
+                    Timestamp = DateTime.Today.AddHours(10).AddMinutes(19),
+                    IsFromCurrentUser = true
+                },
+                new ChatMessage
+                {
+                    Id = "msg_5",
+                    ConversationId = "conv_1",
+                    SenderName = "Arielle T.",
+                    Text = "See you then!",
+                    Timestamp = DateTime.Today.AddHours(10).AddMinutes(20),
+                    IsFromCurrentUser = true
                 }
             ]
         });
@@ -97,7 +115,7 @@ public class ChatService : IChatService
         {
             Id = Guid.NewGuid().ToString("N"),
             ConversationId = conversationId,
-            SenderName = "Arielle S.",
+            SenderName = "Arielle T.",
             Text = text.Trim(),
             Timestamp = DateTime.Now,
             IsFromCurrentUser = true
