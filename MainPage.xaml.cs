@@ -151,6 +151,16 @@ public partial class MainPage : ContentPage
         VerticalTextAlignment = TextAlignment.Center
     };
 
+    private static Label Text(string value, double size, bool bold, Color color) => new()
+    {
+        Text = value,
+        FontSize = size,
+        FontFamily = bold ? "OpenSansSemibold" : "OpenSansRegular",
+        TextColor = color,
+        LineBreakMode = LineBreakMode.WordWrap,
+        VerticalTextAlignment = TextAlignment.Center
+    };
+
     private static Button ActionButton(string title, Action action, bool primary = true, string? colorOverride = null)
     {
         var bg = colorOverride != null ? colorOverride : (primary ? Blue : PaleBlue);

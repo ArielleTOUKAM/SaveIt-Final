@@ -33,14 +33,14 @@ public partial class MainPage
             Children =
             {
                 // Light Blue Hand
-                new Path
+                new Microsoft.Maui.Controls.Shapes.Path
                 {
                     Fill = Color.FromArgb(FigmaAccentBlue),
                     Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(
                         "M 20 62 C 20 54 28 46 38 46 C 44 46 48 50 54 55 C 60 59 66 60 74 58 C 80 57 86 51 86 44 C 86 42 88 40 91 42 C 94 44 95 48 93 54 C 88 68 76 78 58 78 C 42 78 30 72 20 62 Z")!
                 },
                 // Solid Royal Blue Pin
-                new Path
+                new Microsoft.Maui.Controls.Shapes.Path
                 {
                     Fill = Color.FromArgb(FigmaBlue),
                     Data = (Geometry)new PathGeometryConverter().ConvertFromInvariantString(
@@ -132,7 +132,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         emailInput.TextChanged += (_, e) => vm.Email = e.NewTextValue;
 
@@ -144,7 +144,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         passInput.TextChanged += (_, e) => vm.Password = e.NewTextValue;
 
@@ -260,7 +260,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
 
         var emailInput = new Entry
@@ -269,7 +269,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
 
         var phoneInput = new Entry
@@ -278,7 +278,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
 
         var passInput = new Entry
@@ -288,7 +288,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
 
         var eye1 = new Button { Text = "👁", FontSize = 13, TextColor = Color.FromArgb(FigmaTextMuted), BackgroundColor = Colors.Transparent, Padding = 0, WidthRequest = 30 };
@@ -320,7 +320,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
 
         var eye2 = new Button { Text = "👁", FontSize = 13, TextColor = Color.FromArgb(FigmaTextMuted), BackgroundColor = Colors.Transparent, Padding = 0, WidthRequest = 30 };
@@ -390,14 +390,17 @@ public partial class MainPage
                             StrokeShape = new RoundRectangle { CornerRadius = 4 },
                             BackgroundColor = Colors.White
                         },
-                        new FormattedString
+                        new Label
                         {
-                            Spans =
+                            FormattedText = new FormattedString
                             {
-                                new Span { Text = "I agree to the ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 11 },
-                                new Span { Text = "Terms of Service", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 11 },
-                                new Span { Text = " and ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 11 },
-                                new Span { Text = "Privacy Policy", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 11 }
+                                Spans =
+                                {
+                                    new Span { Text = "I agree to the ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 11 },
+                                    new Span { Text = "Terms of Service", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 11 },
+                                    new Span { Text = " and ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 11 },
+                                    new Span { Text = "Privacy Policy", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 11 }
+                                }
                             }
                         }
                     }
@@ -486,7 +489,7 @@ public partial class MainPage
             TextColor = Color.FromArgb(FigmaTextDark),
             PlaceholderColor = Color.FromArgb(FigmaTextMuted),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         searchEntry.TextChanged += (_, e) => vm.SearchQuery = e.NewTextValue;
 
@@ -835,7 +838,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         nameInput.TextChanged += (_, e) => vm.ItemTitle = e.NewTextValue;
 
@@ -846,7 +849,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         categoryPicker.SelectedIndexChanged += (_, _) =>
         {
@@ -873,7 +876,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         placeInput.TextChanged += (_, e) => vm.Location = e.NewTextValue;
 
@@ -883,7 +886,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
         datePicker.DateSelected += (_, e) => vm.Date = e.NewDate;
 
@@ -2029,7 +2032,7 @@ public partial class MainPage
                 Children =
                 {
                     Text("🛡", 12, false, Orange),
-                    Text("Meet in a public place. Use in-app contact only. Never\nshare personal details or payment info outside SaveIt.", 9, false, Color.FromArgb("#7C5300"))
+                    Text("Meet in a public place. Use in-app contact only. Never\nshare personal details or payment info outside SaveIt.", 9, false, "#7C5300")
                 }
             }
         };
@@ -2165,7 +2168,7 @@ public partial class MainPage
             TextColor = Color.FromArgb(FigmaTextDark),
             PlaceholderColor = Color.FromArgb(FigmaTextMuted),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand
+            HorizontalOptions = LayoutOptions.Fill
         };
 
         var sendBtn = new Border
@@ -2266,7 +2269,7 @@ public partial class MainPage
                         }
                     },
                     Text("Arielle T.", 18, true, "#FFFFFF"),
-                    Text("arielle@gmail.com", 11, false, Color.FromArgb(FigmaLightBlue)),
+                    Text("arielle@gmail.com", 11, false, FigmaLightBlue),
                     new Border
                     {
                         BackgroundColor = Colors.Transparent,
@@ -2681,7 +2684,7 @@ public partial class MainPage
             FontSize = 13,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.FillAndExpand,
+            HorizontalOptions = LayoutOptions.Fill,
             ContentLayout = new Button.ButtonContentLayout(Button.ButtonContentLayout.ImagePosition.Left, 0),
             Padding = new Thickness(4, 6)
         };
