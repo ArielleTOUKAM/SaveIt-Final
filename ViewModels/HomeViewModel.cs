@@ -12,6 +12,7 @@ public class HomeViewModel : BaseViewModel
 
     private string _searchQuery = string.Empty;
     private string _selectedFilter = "All"; // "All", "Lost", "Found"
+    private string _selectedCategory = "All"; // "All", "Electronics", "Clothing", "Documents"
     private int _suggestedMatchesCount;
     private bool _hasSuggestedMatches;
 
@@ -27,6 +28,12 @@ public class HomeViewModel : BaseViewModel
         {
             if (filter == null) return;
             SelectedFilter = filter;
+            await LoadItemsAsync();
+        });
+        SelectCategoryCommand = new Command<string>(async (cat) =>
+        {
+            if (cat == null) return;
+            SelectedCategory = cat;
             await LoadItemsAsync();
         });
         SelectItemCommand = new Command<Item>((item) =>
@@ -60,6 +67,12 @@ public class HomeViewModel : BaseViewModel
         set => SetProperty(ref _selectedFilter, value);
     }
 
+    public string SelectedCategory
+    {
+        get => _selectedCategory;
+        set => SetProperty(ref _selectedCategory, value);
+    }
+
     public int SuggestedMatchesCount
     {
         get => _suggestedMatchesCount;
@@ -80,6 +93,7 @@ public class HomeViewModel : BaseViewModel
 
     public ICommand SearchCommand { get; }
     public ICommand SelectFilterCommand { get; }
+    public ICommand SelectCategoryCommand { get; }
     public ICommand SelectItemCommand { get; }
     public ICommand ReportLostCommand { get; }
     public ICommand ReportFoundCommand { get; }
@@ -89,7 +103,8 @@ public class HomeViewModel : BaseViewModel
     public async Task LoadItemsAsync()
     {
         IsBusy = true;
-        var list = await _itemService.GetItemsAsync(SelectedFilter, SearchQuery);
+        var filterToUse = SelectedCategory != "All" ? SelectedCategory : SelectedFilter;
+        var list = await _itemService.GetItemsAsync(filterToUse, SearchQuery);
         Items.Clear();
         foreach (var item in list)
         {
