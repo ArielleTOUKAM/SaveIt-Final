@@ -107,19 +107,21 @@ public partial class MainPage : ContentPage
         {
             var tab = tabs[i];
             var active = ViewModel.SelectedTab == tab.TabKey;
-            var button = new Button
+            var tabContent = new VerticalStackLayout
             {
-                Text = $"{tab.Icon}\n{tab.Name}",
-                FontSize = 10,
-                FontFamily = active ? "OpenSansSemibold" : "OpenSansRegular",
-                TextColor = active ? Color.FromArgb(Blue) : Color.FromArgb(Muted),
-                BackgroundColor = Colors.Transparent,
-                Padding = new Thickness(0, 2),
-                CornerRadius = 0,
-                MinimumHeightRequest = 48
+                Spacing = 2,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                Children =
+                {
+                    Text(tab.Icon, 16, false, active ? Blue : Muted),
+                    Text(tab.Name, 10, active, active ? Blue : Muted)
+                }
             };
-            button.Clicked += (_, _) => ViewModel.SelectTabCommand.Execute(tab.TabKey);
-            bar.Add(button, i, 0);
+            var tap = new TapGestureRecognizer();
+            tap.Tapped += (_, _) => ViewModel.SelectTabCommand.Execute(tab.TabKey);
+            tabContent.GestureRecognizers.Add(tap);
+            bar.Add(tabContent, i, 0);
         }
 
         return new Border
@@ -168,38 +170,59 @@ public partial class MainPage : ContentPage
         var button = new Button
         {
             Text = title,
-            FontSize = 14,
+            FontSize = 15,
             FontFamily = "OpenSansSemibold",
             TextColor = fg,
             BackgroundColor = Color.FromArgb(bg),
             BorderColor = primary ? Color.FromArgb(bg) : Color.FromArgb(Line),
-            BorderWidth = primary ? 0 : 1,
-            CornerRadius = 11,
-            HeightRequest = 48,
-            Padding = new Thickness(14, 0)
+            BorderWidth = primary ? 0 : 1.5,
+            CornerRadius = 12,
+            HeightRequest = 52,
+            Padding = new Thickness(16, 12),
+            CharacterSpacing = 0.3
         };
         button.Clicked += (_, _) => action();
         return button;
     }
 
-    private static Border Card(View content, string background = "#FFFFFF", double radius = 14) => new()
+    private static Border Card(View content, string background = "#FFFFFF", double radius = 16, double shadowRadius = 8) => new()
     {
         BackgroundColor = Color.FromArgb(background),
         Stroke = Color.FromArgb(Line),
         StrokeThickness = 1,
         StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(radius) },
-        Padding = 12,
-        Content = content
+        Padding = 16,
+        Content = content,
+        Shadow = new Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Opacity = 0.08f, Radius = (float)shadowRadius }
+    };
+
+    private static Border InputField(Entry entry, string icon = "", string background = "#FFFFFF") => new()
+    {
+        BackgroundColor = Color.FromArgb(background),
+        Stroke = Color.FromArgb(Line),
+        StrokeThickness = 1.5,
+        StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(10) },
+        Padding = new Thickness(14, 12),
+        Content = new HorizontalStackLayout
+        {
+            Spacing = 10,
+            VerticalOptions = LayoutOptions.Center,
+            Children =
+            {
+                icon != "" ? Text(icon, 16, false, Muted) : new Label { WidthRequest = 0 },
+                entry
+            }
+        }
     };
 
     private static Border StatusBadge(string text, string textColor, string bgColor) => new()
     {
         BackgroundColor = Color.FromArgb(bgColor),
         Stroke = Color.FromArgb(textColor),
-        StrokeThickness = 1,
-        StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(6) },
-        Padding = new Thickness(8, 2),
+        StrokeThickness = 1.5,
+        StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(8) },
+        Padding = new Thickness(10, 4),
         HorizontalOptions = LayoutOptions.Start,
-        Content = Text(text, 11, true, textColor)
+        Content = Text(text, 12, true, textColor)
     };
 }

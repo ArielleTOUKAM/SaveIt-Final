@@ -8,12 +8,13 @@ public class AuthViewModel : BaseViewModel
     private readonly IAuthService _authService;
     private readonly Action<string> _navigateAction;
 
-    private string _email = "arielle@gmail.com";
-    private string _password = "Password123";
-    private string _fullName = "Arielle Seumegne";
-    private string _confirmPassword = "Password123";
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private string _fullName = string.Empty;
+    private string _confirmPassword = string.Empty;
     private string? _errorMessage;
     private bool _isLoginMode = true;
+    private bool _hasAttemptedRegistration;
 
     public AuthViewModel(IAuthService authService, Action<string> navigateAction)
     {
@@ -30,32 +31,61 @@ public class AuthViewModel : BaseViewModel
     public string Email
     {
         get => _email;
-        set => SetProperty(ref _email, value);
+        set
+        {
+            if (SetProperty(ref _email, value))
+                OnRegistrationValuesChanged();
+        }
     }
 
     public string Password
     {
         get => _password;
-        set => SetProperty(ref _password, value);
+        set
+        {
+            if (SetProperty(ref _password, value))
+                OnRegistrationValuesChanged();
+        }
     }
 
     public string FullName
     {
         get => _fullName;
-        set => SetProperty(ref _fullName, value);
+        set
+        {
+            if (SetProperty(ref _fullName, value))
+                OnRegistrationValuesChanged();
+        }
     }
 
     public string ConfirmPassword
     {
         get => _confirmPassword;
-        set => SetProperty(ref _confirmPassword, value);
+        set
+        {
+            if (SetProperty(ref _confirmPassword, value))
+                OnRegistrationValuesChanged();
+        }
     }
 
     public string? ErrorMessage
     {
         get => _errorMessage;
-        set => SetProperty(ref _errorMessage, value);
+        set
+        {
+            if (SetProperty(ref _errorMessage, value))
+                OnPropertyChanged(nameof(HasError));
+        }
     }
+
+    public bool HasError => !string.IsNullOrWhiteSpace(ErrorMessage);
+    public bool IsFullNameInvalid => _hasAttemptedRegistration && string.IsNullOrWhiteSpace(FullName);
+    public bool IsRegistrationEmailInvalid => _hasAttemptedRegistration &&
+        (string.IsNullOrWhiteSpace(Email) || !Email.Contains('@'));
+    public bool IsRegistrationPasswordInvalid => _hasAttemptedRegistration &&
+        (string.IsNullOrWhiteSpace(Password) || Password.Length < 6);
+    public bool IsConfirmPasswordInvalid => _hasAttemptedRegistration &&
+        (string.IsNullOrWhiteSpace(ConfirmPassword) || Password != ConfirmPassword);
 
     public bool IsLoginMode
     {
@@ -108,6 +138,12 @@ public class AuthViewModel : BaseViewModel
     private async Task ExecuteRegisterAsync()
     {
         ErrorMessage = null;
+        if (!_hasAttemptedRegistration)
+        {
+            _hasAttemptedRegistration = true;
+            OnRegistrationValidationChanged();
+        }
+
         if (string.IsNullOrWhiteSpace(FullName))
         {
             ErrorMessage = "Please enter your full name.";
@@ -144,6 +180,21 @@ public class AuthViewModel : BaseViewModel
         {
             ErrorMessage = "Registration failed. Try again.";
         }
+    }
+
+    private void OnRegistrationValuesChanged()
+    {
+        OnRegistrationValidationChanged();
+        if (HasError)
+            ErrorMessage = null;
+    }
+
+    private void OnRegistrationValidationChanged()
+    {
+        OnPropertyChanged(nameof(IsFullNameInvalid));
+        OnPropertyChanged(nameof(IsRegistrationEmailInvalid));
+        OnPropertyChanged(nameof(IsRegistrationPasswordInvalid));
+        OnPropertyChanged(nameof(IsConfirmPasswordInvalid));
     }
 
     private void ExecuteForgotPassword()

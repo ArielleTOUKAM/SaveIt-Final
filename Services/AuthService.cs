@@ -5,7 +5,7 @@ namespace SaveIt.Services;
 public class AuthService : IAuthService
 {
     private UserProfile _currentUser;
-    private bool _isSignedIn = true; // Initially true for demo session, can be logged out
+    private bool _isSignedIn;
 
     public AuthService()
     {

@@ -4,12 +4,12 @@ using SaveIt.Services;
 
 namespace SaveIt.ViewModels;
 
-public class MainViewModel : BaseViewModel
+public partial class MainViewModel : BaseViewModel
 {
     private readonly IItemService _itemService;
     private readonly IChatService _chatService;
     private readonly INotificationService _notificationService;
-    private readonly IAuthService _authService;
+    private readonly AuthService _authService;
 
     private string _currentScreen = "Splash";
     private string _selectedTab = "Home";
@@ -123,7 +123,6 @@ public class MainViewModel : BaseViewModel
             _navigationHistory.Clear();
         }
 
-        var previousScreen = CurrentScreen;
         CurrentScreen = screen;
 
         // Route dispatcher parameter handling

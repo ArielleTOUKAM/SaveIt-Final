@@ -1,5 +1,6 @@
 using Microsoft.Maui.Controls.Shapes;
 using SaveIt.Models;
+using SaveIt.ViewModels;
 
 namespace SaveIt;
 
@@ -26,8 +27,8 @@ public partial class MainPage
         // Custom Figma Logo: Cupped hand supporting a blue location pin
         var handAndPinLogo = new Grid
         {
-            WidthRequest = 110,
-            HeightRequest = 110,
+            WidthRequest = 120,
+            HeightRequest = 120,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
             Children =
@@ -51,13 +52,13 @@ public partial class MainPage
 
         var dotsLoader = new HorizontalStackLayout
         {
-            Spacing = 7,
+            Spacing = 8,
             HorizontalOptions = LayoutOptions.Center,
             Children =
             {
-                new Ellipse { WidthRequest = 6, HeightRequest = 6, Fill = Color.FromArgb(FigmaBlue) },
-                new Ellipse { WidthRequest = 6, HeightRequest = 6, Fill = Color.FromArgb(FigmaBlue) },
-                new Ellipse { WidthRequest = 6, HeightRequest = 6, Fill = Color.FromArgb(FigmaBlue) }
+                new Ellipse { WidthRequest = 8, HeightRequest = 8, Fill = Color.FromArgb(FigmaBlue) },
+                new Ellipse { WidthRequest = 8, HeightRequest = 8, Fill = Color.FromArgb(FigmaBlue), Opacity = 0.6 },
+                new Ellipse { WidthRequest = 8, HeightRequest = 8, Fill = Color.FromArgb(FigmaBlue), Opacity = 0.3 }
             }
         };
 
@@ -65,12 +66,12 @@ public partial class MainPage
         {
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
-            Spacing = 10,
+            Spacing = 20,
             Children =
             {
                 handAndPinLogo,
-                Text("SaveIt", 28, true, FigmaBlue),
-                Text("Lost. Found. Reunited.", 13, false, FigmaTextMuted)
+                Text("SaveIt", 32, true, FigmaBlue),
+                Text("Lost. Found. Reunited.", 14, false, FigmaTextMuted)
             }
         };
 
@@ -78,12 +79,12 @@ public partial class MainPage
         {
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.End,
-            Spacing = 8,
-            Margin = new Thickness(0, 0, 0, 48),
+            Spacing = 12,
+            Margin = new Thickness(0, 0, 0, 60),
             Children =
             {
                 dotsLoader,
-                Text("Loading...", 11, false, FigmaTextMuted)
+                Text("Loading...", 12, false, FigmaTextMuted)
             }
         };
 
@@ -104,23 +105,23 @@ public partial class MainPage
         var backBtn = new Button
         {
             Text = "←",
-            FontSize = 22,
+            FontSize = 24,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
             HorizontalOptions = LayoutOptions.Start,
             Padding = 0,
-            HeightRequest = 32,
+            HeightRequest = 36,
             Command = new Command(() => ViewModel.NavigateTo("Splash"))
         };
 
         var brandRow = new HorizontalStackLayout
         {
-            Spacing = 6,
+            Spacing = 8,
             VerticalOptions = LayoutOptions.Center,
             Children =
             {
-                BrandPinIcon(18),
-                Text("SaveIt", 17, true, FigmaBlue)
+                BrandPinIcon(20),
+                Text("SaveIt", 18, true, FigmaBlue)
             }
         };
 
@@ -129,10 +130,11 @@ public partial class MainPage
             Text = vm.Email,
             Placeholder = "you@example.com",
             Keyboard = Keyboard.Email,
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
         emailInput.TextChanged += (_, e) => vm.Email = e.NewTextValue;
 
@@ -141,54 +143,63 @@ public partial class MainPage
             Text = vm.Password,
             Placeholder = "••••••••",
             IsPassword = true,
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
         passInput.TextChanged += (_, e) => vm.Password = e.NewTextValue;
 
         var eyeToggle = new Button
         {
             Text = "👁",
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextMuted),
             BackgroundColor = Colors.Transparent,
-            Padding = 0,
-            WidthRequest = 30
+            Padding = new Thickness(8, 0),
+            WidthRequest = 36,
+            HeightRequest = 36
         };
         eyeToggle.Clicked += (_, _) => passInput.IsPassword = !passInput.IsPassword;
 
         var body = new VerticalStackLayout
         {
-            Spacing = 14,
+            Spacing = 18,
+            Padding = new Thickness(16, 12, 16, 24),
             Children =
             {
                 backBtn,
                 brandRow,
                 new VerticalStackLayout
                 {
-                    Spacing = 3,
+                    Spacing = 6,
+                    Margin = new Thickness(0, 8),
                     Children =
                     {
-                        Text("Welcome Back !", 24, true, FigmaTextDark),
-                        Text("Log In to your account", 12, false, FigmaTextMuted)
+                        Text("Welcome Back !", 28, true, FigmaTextDark),
+                        Text("Log In to your account", 14, false, FigmaTextMuted)
                     }
                 },
+
                 FigmaFieldLabel("Email address"),
                 FigmaInputBox("✉", emailInput),
 
                 FigmaFieldLabel("Password"),
                 FigmaInputBoxWithSuffix("🔒", passInput, eyeToggle),
 
+                AuthErrorMessage(vm),
+                Text("Demo access: use any valid email and a password with at least 6 characters.", 11, false, FigmaTextMuted),
+
                 new Button
                 {
                     Text = "Forgot password?",
-                    FontSize = 12,
+                    FontSize = 13,
+                    FontFamily = "OpenSansSemibold",
                     TextColor = Color.FromArgb(FigmaBlue),
                     BackgroundColor = Colors.Transparent,
                     HorizontalOptions = LayoutOptions.Start,
-                    Padding = 0,
+                    Padding = new Thickness(0, 4),
                     Command = vm.ForgotPasswordCommand
                 },
 
@@ -197,12 +208,13 @@ public partial class MainPage
                 new Grid
                 {
                     ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star) },
-                    ColumnSpacing = 10,
+                    ColumnSpacing = 12,
                     VerticalOptions = LayoutOptions.Center,
+                    Margin = new Thickness(0, 6),
                     Children =
                     {
                         new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder), VerticalOptions = LayoutOptions.Center },
-                        Text("or", 12, false, FigmaTextMuted),
+                        Text("or", 13, false, FigmaTextMuted),
                         new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder), VerticalOptions = LayoutOptions.Center }
                     }
                 },
@@ -212,15 +224,15 @@ public partial class MainPage
                 new HorizontalStackLayout
                 {
                     HorizontalOptions = LayoutOptions.Center,
-                    Spacing = 4,
-                    Margin = new Thickness(0, 10, 0, 0),
+                    Spacing = 6,
+                    Margin = new Thickness(0, 8),
                     Children =
                     {
-                        Text("Don't have an account?", 12, false, FigmaTextMuted),
+                        Text("Don't have an account?", 13, false, FigmaTextMuted),
                         new Button
                         {
                             Text = "Sign Up",
-                            FontSize = 12,
+                            FontSize = 13,
                             FontFamily = "OpenSansSemibold",
                             TextColor = Color.FromArgb(FigmaBlue),
                             BackgroundColor = Colors.Transparent,
@@ -232,7 +244,7 @@ public partial class MainPage
             }
         };
 
-        return Scroll(body);
+        return new ScrollView { Content = body };
     }
 
     // ==========================================
@@ -245,53 +257,61 @@ public partial class MainPage
         var backBtn = new Button
         {
             Text = "←",
-            FontSize = 22,
+            FontSize = 24,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
             HorizontalOptions = LayoutOptions.Start,
             Padding = 0,
-            HeightRequest = 32,
+            HeightRequest = 36,
             Command = vm.ToggleModeCommand
         };
 
         var nameInput = new Entry
         {
             Placeholder = "Full name",
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
+        nameInput.TextChanged += (_, e) => vm.FullName = e.NewTextValue;
 
         var emailInput = new Entry
         {
-            Text = "invalid@email",
-            FontSize = 13,
+            Placeholder = "you@example.com",
+            Keyboard = Keyboard.Email,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
+        emailInput.TextChanged += (_, e) => vm.Email = e.NewTextValue;
 
         var phoneInput = new Entry
         {
             Placeholder = "Phone number",
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
 
         var passInput = new Entry
         {
-            Text = "Pass123",
+            Placeholder = "••••••••",
             IsPassword = true,
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
+        passInput.TextChanged += (_, e) => vm.Password = e.NewTextValue;
 
-        var eye1 = new Button { Text = "👁", FontSize = 13, TextColor = Color.FromArgb(FigmaTextMuted), BackgroundColor = Colors.Transparent, Padding = 0, WidthRequest = 30 };
+        var eye1 = new Button { Text = "👁", FontSize = 14, TextColor = Color.FromArgb(FigmaTextMuted), BackgroundColor = Colors.Transparent, Padding = new Thickness(8, 0), WidthRequest = 36, HeightRequest = 36 };
         eye1.Clicked += (_, _) => passInput.IsPassword = !passInput.IsPassword;
 
         var strengthBar = new Grid
@@ -303,13 +323,14 @@ public partial class MainPage
                 new ColumnDefinition(GridLength.Star),
                 new ColumnDefinition(GridLength.Auto)
             },
-            ColumnSpacing = 6,
+            ColumnSpacing = 8,
+            Margin = new Thickness(0, 4),
             Children =
             {
-                new BoxView { HeightRequest = 4, Color = Color.FromArgb(FigmaBlue), CornerRadius = 2 },
-                new BoxView { HeightRequest = 4, Color = Color.FromArgb(FigmaBlue), CornerRadius = 2 },
-                new BoxView { HeightRequest = 4, Color = Color.FromArgb(FigmaBorder), CornerRadius = 2 },
-                Text("Medium", 10, false, FigmaTextMuted)
+                new BoxView { HeightRequest = 5, Color = Color.FromArgb(FigmaBlue), CornerRadius = 2.5 },
+                new BoxView { HeightRequest = 5, Color = Color.FromArgb(FigmaBlue), CornerRadius = 2.5 },
+                new BoxView { HeightRequest = 5, Color = Color.FromArgb(FigmaBorder), CornerRadius = 2.5 },
+                Text("Medium", 11, false, FigmaTextMuted)
             }
         };
 
@@ -317,51 +338,64 @@ public partial class MainPage
         {
             Placeholder = "Confirm password",
             IsPassword = true,
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            Margin = new Thickness(0, 2)
         };
+        confirmInput.TextChanged += (_, e) => vm.ConfirmPassword = e.NewTextValue;
 
-        var eye2 = new Button { Text = "👁", FontSize = 13, TextColor = Color.FromArgb(FigmaTextMuted), BackgroundColor = Colors.Transparent, Padding = 0, WidthRequest = 30 };
+        var eye2 = new Button { Text = "👁", FontSize = 14, TextColor = Color.FromArgb(FigmaTextMuted), BackgroundColor = Colors.Transparent, Padding = new Thickness(8, 0), WidthRequest = 36, HeightRequest = 36 };
         eye2.Clicked += (_, _) => confirmInput.IsPassword = !confirmInput.IsPassword;
 
         var body = new VerticalStackLayout
         {
-            Spacing = 13,
+            Spacing = 16,
+            Padding = new Thickness(16, 12, 16, 24),
             Children =
             {
                 backBtn,
                 new VerticalStackLayout
                 {
-                    Spacing = 3,
+                    Spacing = 6,
+                    Margin = new Thickness(0, 8),
                     Children =
                     {
-                        Text("Create Account", 24, true, FigmaTextDark),
-                        Text("Join SaveIt and help reunite people with their belongings", 12, false, FigmaTextMuted)
+                        Text("Create Account", 28, true, FigmaTextDark),
+                        Text("Join SaveIt and help reunite people with their belongings", 14, false, FigmaTextMuted)
                     }
                 },
 
-                FigmaInputBox("👤", nameInput),
+                new VerticalStackLayout
+                {
+                    Spacing = 2,
+                    Children =
+                    {
+                        FigmaFieldLabel("Full Name"),
+                        FigmaInputBox("👤", nameInput, vm, nameof(AuthViewModel.IsFullNameInvalid))
+                    }
+                },
 
                 new VerticalStackLayout
                 {
                     Spacing = 4,
                     Children =
                     {
-                        FigmaInputBoxWithError("✉", emailInput),
-                        Text("Please enter a valid email address.", 11, false, FigmaRed)
+                        FigmaFieldLabel("Email Address"),
+                        FigmaInputBox("✉", emailInput, vm, nameof(AuthViewModel.IsRegistrationEmailInvalid))
                     }
                 },
 
-                FigmaInputBoxFocused("📞", phoneInput),
+                new VerticalStackLayout { Spacing = 2, Children = { FigmaFieldLabel("Phone Number"), FigmaInputBox("📞", phoneInput) } },
 
                 new VerticalStackLayout
                 {
                     Spacing = 6,
                     Children =
                     {
-                        FigmaInputBoxWithSuffix("🔒", passInput, eye1),
+                        FigmaFieldLabel("Password"),
+                        FigmaInputBoxWithSuffix("🔒", passInput, eye1, vm, nameof(AuthViewModel.IsRegistrationPasswordInvalid)),
                         strengthBar
                     }
                 },
@@ -371,22 +405,25 @@ public partial class MainPage
                     Spacing = 4,
                     Children =
                     {
-                        FigmaInputBoxWithErrorWithSuffix("🔒", confirmInput, eye2),
-                        Text("Passwords do not match.", 11, false, FigmaRed)
+                        FigmaFieldLabel("Confirm Password"),
+                        FigmaInputBoxWithSuffix("🔒", confirmInput, eye2, vm, nameof(AuthViewModel.IsConfirmPasswordInvalid))
                     }
                 },
 
+                AuthErrorMessage(vm),
+
                 new HorizontalStackLayout
                 {
-                    Spacing = 8,
+                    Spacing = 10,
+                    Margin = new Thickness(0, 4),
                     Children =
                     {
                         new Border
                         {
-                            WidthRequest = 18,
-                            HeightRequest = 18,
+                            WidthRequest = 20,
+                            HeightRequest = 20,
                             Stroke = Color.FromArgb(FigmaBlue),
-                            StrokeThickness = 1.5,
+                            StrokeThickness = 2,
                             StrokeShape = new RoundRectangle { CornerRadius = 4 },
                             BackgroundColor = Colors.White
                         },
@@ -396,12 +433,13 @@ public partial class MainPage
                             {
                                 Spans =
                                 {
-                                    new Span { Text = "I agree to the ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 11 },
-                                    new Span { Text = "Terms of Service", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 11 },
-                                    new Span { Text = " and ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 11 },
-                                    new Span { Text = "Privacy Policy", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 11 }
+                                    new Span { Text = "I agree to the ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 12 },
+                                    new Span { Text = "Terms of Service", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 12 },
+                                    new Span { Text = " and ", TextColor = Color.FromArgb(FigmaTextDark), FontSize = 12 },
+                                    new Span { Text = "Privacy Policy", TextColor = Color.FromArgb(FigmaBlue), FontAttributes = FontAttributes.Bold, FontSize = 12 }
                                 }
-                            }
+                            },
+                            LineBreakMode = LineBreakMode.WordWrap
                         }
                     }
                 },
@@ -411,14 +449,15 @@ public partial class MainPage
                 new HorizontalStackLayout
                 {
                     HorizontalOptions = LayoutOptions.Center,
-                    Spacing = 4,
+                    Spacing = 6,
+                    Margin = new Thickness(0, 8),
                     Children =
                     {
-                        Text("Already have an account?", 12, false, FigmaTextMuted),
+                        Text("Already have an account?", 13, false, FigmaTextMuted),
                         new Button
                         {
                             Text = "Log In",
-                            FontSize = 12,
+                            FontSize = 13,
                             FontFamily = "OpenSansSemibold",
                             TextColor = Color.FromArgb(FigmaBlue),
                             BackgroundColor = Colors.Transparent,
@@ -430,7 +469,7 @@ public partial class MainPage
             }
         };
 
-        return Scroll(body);
+        return new ScrollView { Content = body };
     }
 
     // ==========================================
@@ -440,100 +479,126 @@ public partial class MainPage
     {
         var vm = ViewModel.Home;
 
-        var greetingRow = new Grid
+        // Greeting Section with improved spacing
+        var greetingContent = new VerticalStackLayout
         {
-            ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
+            Spacing = 4,
+            VerticalOptions = LayoutOptions.Center,
             Children =
             {
-                new VerticalStackLayout
+                Text("Good morning 👋", 12, false, FigmaTextMuted),
+                Text("Hello, Arielle!", 22, true, FigmaTextDark)
+            }
+        };
+        var notificationButton = new Border
+        {
+            WidthRequest = 42,
+            HeightRequest = 42,
+            Stroke = Color.FromArgb(FigmaBorder),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 21 },
+            BackgroundColor = Colors.White,
+            Padding = 0,
+            Content = new Grid
+            {
+                Children =
                 {
-                    Spacing = 2,
-                    Children =
+                    new Label { Text = "🔔", FontSize = 18, HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center },
+                    new Ellipse
                     {
-                        Text("Good morning 👋", 11, false, FigmaTextMuted),
-                        Text("Hello, Arielle!", 20, true, FigmaTextDark)
-                    }
-                },
-                new Grid
-                {
-                    WidthRequest = 38,
-                    HeightRequest = 38,
-                    Children =
-                    {
-                        new Border
-                        {
-                            Stroke = Color.FromArgb(FigmaBorder),
-                            StrokeThickness = 1,
-                            StrokeShape = new RoundRectangle { CornerRadius = 19 },
-                            BackgroundColor = Colors.White,
-                            Content = Text("🔔", 16, false, FigmaTextDark)
-                        },
-                        new Ellipse
-                        {
-                            WidthRequest = 9,
-                            HeightRequest = 9,
-                            Fill = Color.FromArgb(FigmaRed),
-                            HorizontalOptions = LayoutOptions.End,
-                            VerticalOptions = LayoutOptions.Start,
-                            Margin = new Thickness(0, 4, 4, 0)
-                        }
+                        WidthRequest = 10,
+                        HeightRequest = 10,
+                        Fill = Color.FromArgb(FigmaRed),
+                        HorizontalOptions = LayoutOptions.End,
+                        VerticalOptions = LayoutOptions.Start,
+                        Margin = new Thickness(0, 2, 2, 0)
                     }
                 }
             }
         };
+        var greetingRow = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
+            Margin = new Thickness(16, 12, 16, 0),
+            VerticalOptions = LayoutOptions.Start
+        };
+        greetingRow.Add(greetingContent, 0, 0);
+        greetingRow.Add(notificationButton, 1, 0);
 
+        // Search box
         var searchEntry = new Entry
         {
             Placeholder = "Search a lost or found item...",
-            FontSize = 13,
+            FontSize = 14,
             TextColor = Color.FromArgb(FigmaTextDark),
             PlaceholderColor = Color.FromArgb(FigmaTextMuted),
             BackgroundColor = Colors.Transparent,
-            HorizontalOptions = LayoutOptions.Fill
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Center,
+            HeightRequest = 32,
+            Margin = 0
         };
+#if WINDOWS
+        searchEntry.HandlerChanged += (_, _) =>
+        {
+            if (searchEntry.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.TextBox nativeEntry)
+            {
+                nativeEntry.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                nativeEntry.Padding = new Microsoft.UI.Xaml.Thickness(0);
+                nativeEntry.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            }
+        };
+#endif
         searchEntry.TextChanged += (_, e) => vm.SearchQuery = e.NewTextValue;
+
+        var searchContents = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
+            ColumnSpacing = 10,
+            VerticalOptions = LayoutOptions.Center,
+            HeightRequest = 34
+        };
+        searchContents.Add(Text("⌕", 18, false, FigmaTextMuted), 0, 0);
+        searchContents.Add(searchEntry, 1, 0);
+        searchContents.Add(Text("☷", 16, false, FigmaBlue), 2, 0);
 
         var searchBox = new Border
         {
             BackgroundColor = Colors.White,
             Stroke = Color.FromArgb(FigmaBorder),
-            StrokeThickness = 1,
+            StrokeThickness = 1.5,
             StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(12, 0),
-            HeightRequest = 46,
-            Content = new Grid
-            {
-                ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
-                ColumnSpacing = 10,
-                Children =
-                {
-                    Text("🔍", 14, false, FigmaTextMuted),
-                    searchEntry,
-                    Text("☵", 15, false, FigmaBlue)
-                }
-            }
+            Padding = new Thickness(14, 6),
+            HeightRequest = 52,
+            Margin = new Thickness(16, 18, 16, 0),
+            Content = searchContents
         };
 
+        // Action Cards - Improved design
         var actionCards = new Grid
         {
             ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) },
-            ColumnSpacing = 10
+            ColumnSpacing = 12,
+            Margin = new Thickness(16, 18, 16, 0)
         };
 
         var reportLostCard = new Border
         {
             BackgroundColor = Color.FromArgb(FigmaBlue),
             Stroke = Color.FromArgb(FigmaBlue),
-            StrokeThickness = 1,
-            StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(12, 10),
+            StrokeThickness = 0,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Padding = new Thickness(14, 16),
+            HeightRequest = 110,
             Content = new VerticalStackLayout
             {
-                Spacing = 3,
+                Spacing = 8,
+                VerticalOptions = LayoutOptions.Center,
                 Children =
                 {
-                    Text("⚠ Report Lost", 14, true, "#FFFFFF"),
-                    Text("Declare a missing item", 11, false, FigmaLightBlue)
+                    Text("⚠", 24, false, "#FFFFFF"),
+                    Text("Report Lost", 15, true, "#FFFFFF"),
+                    Text("Declare a missing item", 12, false, FigmaLightBlue)
                 }
             }
         };
@@ -546,16 +611,19 @@ public partial class MainPage
         {
             BackgroundColor = Colors.White,
             Stroke = Color.FromArgb(FigmaBlue),
-            StrokeThickness = 1.5,
-            StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(12, 10),
+            StrokeThickness = 2,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Padding = new Thickness(14, 16),
+            HeightRequest = 110,
             Content = new VerticalStackLayout
             {
-                Spacing = 3,
+                Spacing = 8,
+                VerticalOptions = LayoutOptions.Center,
                 Children =
                 {
-                    Text("✓ Report Found", 14, true, FigmaBlue),
-                    Text("Declare a found item", 11, false, FigmaTextMuted)
+                    Text("✓", 24, false, FigmaGreen),
+                    Text("Report Found", 15, true, FigmaTextDark),
+                    Text("Declare a found item", 12, false, FigmaTextMuted)
                 }
             }
         };
@@ -564,75 +632,162 @@ public partial class MainPage
         reportFoundCard.GestureRecognizers.Add(tapFound);
         actionCards.Add(reportFoundCard, 1, 0);
 
-        var categoryPills = new HorizontalStackLayout { Spacing = 8 };
+        // Category pills - Improved styling
+        var categoryPills = new HorizontalStackLayout { Spacing = 10, Margin = new Thickness(16, 0, 16, 0) };
         foreach (var cat in new[] { "All", "Electronics", "Clothing", "Documents" })
         {
             var isSel = vm.SelectedCategory == cat;
             var pill = new Button
             {
                 Text = cat,
-                FontSize = 12,
+                FontSize = 13,
                 FontFamily = isSel ? "OpenSansSemibold" : "OpenSansRegular",
-                TextColor = isSel ? Colors.White : Color.FromArgb(FigmaTextDark),
-                BackgroundColor = isSel ? Color.FromArgb(FigmaBlue) : Colors.White,
-                BorderColor = isSel ? Color.FromArgb(FigmaBlue) : Color.FromArgb(FigmaBorder),
-                BorderWidth = 1,
-                CornerRadius = 16,
-                HeightRequest = 32,
-                Padding = new Thickness(14, 0)
+                TextColor = isSel ? Colors.White : Color.FromArgb(FigmaBlue),
+                BackgroundColor = isSel ? Color.FromArgb(FigmaBlue) : Colors.Transparent,
+                BorderColor = Color.FromArgb(FigmaBlue),
+                BorderWidth = isSel ? 0 : 1.5,
+                CornerRadius = 18,
+                HeightRequest = 36,
+                Padding = new Thickness(16, 0)
             };
             var currentCat = cat;
             pill.Clicked += (_, _) => vm.SelectCategoryCommand.Execute(currentCat);
             categoryPills.Children.Add(pill);
         }
 
+        var recentReportsHeader = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
+            Margin = new Thickness(16, 8, 16, 0)
+        };
+        recentReportsHeader.Add(Text("Recent Reports", 17, true, FigmaTextDark), 0, 0);
+        recentReportsHeader.Add(new Button
+        {
+            Text = "See all →",
+            FontSize = 13,
+            FontFamily = "OpenSansSemibold",
+            TextColor = Color.FromArgb(FigmaBlue),
+            BackgroundColor = Colors.Transparent,
+            Padding = 0,
+            Command = new Command(() => vm.SelectFilterCommand.Execute("All"))
+        }, 1, 0);
+
         var body = new VerticalStackLayout
         {
-            Spacing = 14,
+            Spacing = 18,
+            Padding = new Thickness(0, 0, 0, 16),
             Children =
             {
                 greetingRow,
                 searchBox,
                 actionCards,
-
-                new Grid
-                {
-                    ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
-                    Children =
-                    {
-                        Text("Recent Reports", 16, true, FigmaTextDark),
-                        new Button
-                        {
-                            Text = "See all",
-                            FontSize = 12,
-                            TextColor = Color.FromArgb(FigmaBlue),
-                            BackgroundColor = Colors.Transparent,
-                            Padding = 0,
-                            Command = new Command(() => vm.SelectFilterCommand.Execute("All"))
-                        }
-                    }
-                },
+                recentReportsHeader,
                 categoryPills
             }
         };
 
-        foreach (var item in vm.Items)
+        var reportsList = new VerticalStackLayout { Spacing = 10 };
+        BindableLayout.SetItemsSource(reportsList, vm.Items);
+        BindableLayout.SetItemTemplate(reportsList, new DataTemplate(() =>
         {
-            var cur = item;
-            var thumbColor = cur.Title.Contains("Wallet") ? "#222222" : (cur.Title.Contains("Jacket") ? "#2B4764" : "#1C1C1E");
-            var thumbIcon = cur.Title.Contains("Wallet") ? "👛" : (cur.Title.Contains("Jacket") ? "🧥" : "🎧");
-
             var thumbnail = new Border
             {
-                WidthRequest = 48,
-                HeightRequest = 48,
-                BackgroundColor = Color.FromArgb(thumbColor),
+                WidthRequest = 56,
+                HeightRequest = 56,
+                BackgroundColor = Color.FromArgb("#E9EDF3"),
                 StrokeShape = new RoundRectangle { CornerRadius = 10 },
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                Content = Text(thumbIcon, 20, false, "#FFFFFF")
+                Content = Text("•", 20, false, FigmaTextMuted)
             };
+            var titleLabel = new Label
+            {
+                FontSize = 14,
+                FontFamily = "OpenSansSemibold",
+                TextColor = Color.FromArgb(FigmaTextDark)
+            };
+            titleLabel.SetBinding(Label.TextProperty, nameof(Item.Title));
+            var locationLabel = new Label
+            {
+                FontSize = 11,
+                TextColor = Color.FromArgb(FigmaTextMuted)
+            };
+            locationLabel.SetBinding(Label.TextProperty, new Binding(nameof(Item.Location), stringFormat: "⌖ {0}"));
+            var dateLabel = new Label { FontSize = 11, TextColor = Color.FromArgb(FigmaTextMuted) };
+            dateLabel.SetBinding(Label.TextProperty, new Binding(nameof(Item.DateDisplay), stringFormat: "▣ {0}"));
+            var categoryLabel = new Label { FontSize = 11, TextColor = Color.FromArgb(FigmaTextMuted) };
+            categoryLabel.SetBinding(Label.TextProperty, new Binding(nameof(Item.Category), stringFormat: "◇ {0}"));
+            var reportDetails = new VerticalStackLayout
+            {
+                Spacing = 3,
+                Children =
+                {
+                    titleLabel,
+                    locationLabel,
+                    new HorizontalStackLayout
+                    {
+                        Spacing = 8,
+                        Children = { dateLabel, categoryLabel }
+                    }
+                }
+            };
+            var reportGrid = new Grid
+            {
+                ColumnDefinitions = { new ColumnDefinition(56), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
+                ColumnSpacing = 10,
+                VerticalOptions = LayoutOptions.Center
+            };
+            reportGrid.Add(thumbnail, 0, 0);
+            reportGrid.Add(reportDetails, 1, 0);
+            var statusBadge = new Border
+            {
+                BackgroundColor = Color.FromArgb(FigmaGreenBg),
+                Stroke = Color.FromArgb(FigmaGreen),
+                Padding = new Thickness(10, 4),
+                StrokeThickness = 1.5,
+                StrokeShape = new RoundRectangle { CornerRadius = 8 }
+            };
+            var badgeText = new Label
+            {
+                FontSize = 12,
+                FontFamily = "OpenSansSemibold",
+                VerticalTextAlignment = TextAlignment.Center
+            };
+            badgeText.SetBinding(Label.TextProperty, nameof(Item.TypeDisplay));
+            badgeText.TextColor = Color.FromArgb(FigmaGreen);
+            badgeText.Triggers.Add(new DataTrigger(typeof(Label))
+            {
+                Binding = new Binding(nameof(Item.Type)),
+                Value = ItemType.Lost,
+                Setters = { new Setter { Property = Label.TextColorProperty, Value = Color.FromArgb(FigmaRed) } }
+            });
+            statusBadge.Content = badgeText;
+            statusBadge.Triggers.Add(new DataTrigger(typeof(Border))
+            {
+                Binding = new Binding(nameof(Item.Type)),
+                Value = ItemType.Lost,
+                Setters =
+                {
+                    new Setter { Property = BackgroundColorProperty, Value = Color.FromArgb(FigmaRedBg) },
+                    new Setter { Property = Border.StrokeProperty, Value = Color.FromArgb(FigmaRed) }
+                }
+            });
+            reportGrid.Add(statusBadge, 2, 0);
 
+            thumbnail.BindingContextChanged += (_, _) =>
+            {
+                if (thumbnail.BindingContext is Item boundItem)
+                {
+                    var icon = boundItem.Title.Contains("Wallet", StringComparison.OrdinalIgnoreCase) ? "👛"
+                        : boundItem.Title.Contains("Jacket", StringComparison.OrdinalIgnoreCase) ? "🧥"
+                        : "🎧";
+                    thumbnail.BackgroundColor = Color.FromArgb(
+                        boundItem.Title.Contains("Wallet", StringComparison.OrdinalIgnoreCase) ? "#222222"
+                        : boundItem.Title.Contains("Jacket", StringComparison.OrdinalIgnoreCase) ? "#2B4764"
+                        : "#1C1C1E");
+                    thumbnail.Content = Text(icon, 20, false, "#FFFFFF");
+                }
+            };
             var itemCard = new Border
             {
                 BackgroundColor = Colors.White,
@@ -640,60 +795,34 @@ public partial class MainPage
                 StrokeThickness = 1,
                 StrokeShape = new RoundRectangle { CornerRadius = 12 },
                 Padding = 12,
-                Content = new Grid
-                {
-                    ColumnDefinitions = { new ColumnDefinition(52), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
-                    ColumnSpacing = 10,
-                    Children =
-                    {
-                        thumbnail,
-                        new VerticalStackLayout
-                        {
-                            Spacing = 3,
-                            Children =
-                            {
-                                Text(cur.Title, 14, true, FigmaTextDark),
-                                Text($"📍 {cur.Location}", 11, false, FigmaTextMuted),
-                                new HorizontalStackLayout
-                                {
-                                    Spacing = 8,
-                                    Children =
-                                    {
-                                        Text($"📅 {cur.DateDisplay}", 11, false, FigmaTextMuted),
-                                        Text($"🏷 {cur.Category}", 11, false, FigmaTextMuted)
-                                    }
-                                }
-                            }
-                        },
-                        StatusBadge(cur.TypeDisplay, cur.StatusColor, cur.StatusBgColor)
-                    }
-                }
+                Content = reportGrid
             };
-
             var tap = new TapGestureRecognizer();
-            tap.Tapped += (_, _) => vm.SelectItemCommand.Execute(cur);
+            tap.Tapped += (_, _) =>
+            {
+                if (itemCard.BindingContext is Item item)
+                    vm.SelectItemCommand.Execute(item);
+            };
             itemCard.GestureRecognizers.Add(tap);
-            body.Children.Add(itemCard);
-        }
+            return itemCard;
+        }));
+        body.Children.Add(reportsList);
 
         var matchesHeader = new Grid
         {
             ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
             Margin = new Thickness(0, 6, 0, 0),
-            Children =
-            {
-                Text("Possible Matches", 16, true, FigmaTextDark),
-                new Button
-                {
-                    Text = "See all",
-                    FontSize = 12,
-                    TextColor = Color.FromArgb(FigmaBlue),
-                    BackgroundColor = Colors.Transparent,
-                    Padding = 0,
-                    Command = vm.ViewMatchesCommand
-                }
-            }
         };
+        matchesHeader.Add(Text("Possible Matches", 16, true, FigmaTextDark), 0, 0);
+        matchesHeader.Add(new Button
+        {
+            Text = "See all",
+            FontSize = 12,
+            TextColor = Color.FromArgb(FigmaBlue),
+            BackgroundColor = Colors.Transparent,
+            Padding = 0,
+            Command = vm.ViewMatchesCommand
+        }, 1, 0);
         body.Children.Add(matchesHeader);
 
         var matchScoreBox = new Border
@@ -725,6 +854,26 @@ public partial class MainPage
             Content = Text(">", 14, true, "#FFFFFF")
         };
 
+        var matchDetails = new VerticalStackLayout
+        {
+            Spacing = 2,
+            Children =
+            {
+                Text("Black wallet → Found Item", 13, true, FigmaTextDark),
+                Text("⌖ Campus • Oct 5, 2026", 11, false, FigmaTextMuted),
+                Text("Category • description • place • date", 10, false, FigmaTextMuted)
+            }
+        };
+        var matchCardGrid = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(52), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
+            ColumnSpacing = 10,
+            VerticalOptions = LayoutOptions.Center
+        };
+        matchCardGrid.Add(matchScoreBox, 0, 0);
+        matchCardGrid.Add(matchDetails, 1, 0);
+        matchCardGrid.Add(matchChevronBtn, 2, 0);
+
         var possibleMatchCard = new Border
         {
             BackgroundColor = Colors.White,
@@ -732,27 +881,7 @@ public partial class MainPage
             StrokeThickness = 1,
             StrokeShape = new RoundRectangle { CornerRadius = 12 },
             Padding = 12,
-            Content = new Grid
-            {
-                ColumnDefinitions = { new ColumnDefinition(52), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
-                ColumnSpacing = 10,
-                VerticalOptions = LayoutOptions.Center,
-                Children =
-                {
-                    matchScoreBox,
-                    new VerticalStackLayout
-                    {
-                        Spacing = 2,
-                        Children =
-                        {
-                            Text("Black wallet → Found Item", 13, true, FigmaTextDark),
-                            Text("📍 Campus • Oct 5, 2026", 11, false, FigmaTextMuted),
-                            Text("Category • description • place • date", 10, false, FigmaTextMuted)
-                        }
-                    },
-                    matchChevronBtn
-                }
-            }
+            Content = matchCardGrid
         };
 
         var tapMatch = new TapGestureRecognizer();
@@ -782,16 +911,62 @@ public partial class MainPage
             Command = new Command(() => ViewModel.NavigateTo("Home"))
         };
 
+        backBtn.WidthRequest = 36;
+        backBtn.MinimumWidthRequest = 36;
+        backBtn.VerticalOptions = LayoutOptions.Center;
+        var reportTitle = Text("Report an Item", 17, true, FigmaTextDark);
+        reportTitle.HorizontalTextAlignment = TextAlignment.Center;
+        reportTitle.LineBreakMode = LineBreakMode.NoWrap;
+        reportTitle.HorizontalOptions = LayoutOptions.Fill;
         var titleRow = new Grid
         {
-            ColumnDefinitions = { new ColumnDefinition(36), new ColumnDefinition(GridLength.Star), new ColumnDefinition(36) },
-            Children =
+            ColumnDefinitions =
             {
-                backBtn,
-                Text("Report an Item", 17, true, FigmaTextDark)
-            }
+                new ColumnDefinition(40),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(40)
+            },
+            ColumnSpacing = 0,
+            HeightRequest = 44,
+            HorizontalOptions = LayoutOptions.Fill,
         };
+        titleRow.Add(backBtn, 0, 0);
+        titleRow.Add(reportTitle, 1, 0);
 
+        var reportTypeButtons = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) },
+            ColumnSpacing = 4,
+            HorizontalOptions = LayoutOptions.Fill
+        };
+        var lostButton = new Button
+        {
+            Text = "⌕  Lost",
+            FontSize = 13,
+            FontFamily = vm.IsLost ? "OpenSansSemibold" : "OpenSansRegular",
+            TextColor = vm.IsLost ? Colors.White : Color.FromArgb(FigmaBlue),
+            BackgroundColor = vm.IsLost ? Color.FromArgb(FigmaBlue) : Colors.Transparent,
+            CornerRadius = 8,
+            HeightRequest = 38,
+            Padding = new Thickness(8, 0),
+            HorizontalOptions = LayoutOptions.Fill,
+            Command = new Command(() => { vm.SelectTypeCommand.Execute("Lost"); RenderScreen(); })
+        };
+        var foundButton = new Button
+        {
+            Text = "✓  Found",
+            FontSize = 13,
+            FontFamily = vm.IsFound ? "OpenSansSemibold" : "OpenSansRegular",
+            TextColor = vm.IsFound ? Colors.White : Color.FromArgb(FigmaBlue),
+            BackgroundColor = vm.IsFound ? Color.FromArgb(FigmaBlue) : Colors.Transparent,
+            CornerRadius = 8,
+            HeightRequest = 38,
+            Padding = new Thickness(8, 0),
+            HorizontalOptions = LayoutOptions.Fill,
+            Command = new Command(() => { vm.SelectTypeCommand.Execute("Found"); RenderScreen(); })
+        };
+        reportTypeButtons.Add(lostButton, 0, 0);
+        reportTypeButtons.Add(foundButton, 1, 0);
         var typeCapsule = new Border
         {
             BackgroundColor = Color.FromArgb(FigmaLightBlue),
@@ -799,36 +974,8 @@ public partial class MainPage
             StrokeThickness = 1,
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
             Padding = 3,
-            Content = new Grid
-            {
-                ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) },
-                ColumnSpacing = 4,
-                Children =
-                {
-                    new Button
-                    {
-                        Text = "🔍 Lost",
-                        FontSize = 13,
-                        FontFamily = vm.IsLost ? "OpenSansSemibold" : "OpenSansRegular",
-                        TextColor = vm.IsLost ? Colors.White : Color.FromArgb(FigmaBlue),
-                        BackgroundColor = vm.IsLost ? Color.FromArgb(FigmaBlue) : Colors.Transparent,
-                        CornerRadius = 8,
-                        HeightRequest = 38,
-                        Command = new Command(() => { vm.SelectTypeCommand.Execute("Lost"); RenderScreen(); })
-                    },
-                    new Button
-                    {
-                        Text = "✓ Found",
-                        FontSize = 13,
-                        FontFamily = vm.IsFound ? "OpenSansSemibold" : "OpenSansRegular",
-                        TextColor = vm.IsFound ? Colors.White : Color.FromArgb(FigmaBlue),
-                        BackgroundColor = vm.IsFound ? Color.FromArgb(FigmaBlue) : Colors.Transparent,
-                        CornerRadius = 8,
-                        HeightRequest = 38,
-                        Command = new Command(() => { vm.SelectTypeCommand.Execute("Found"); RenderScreen(); })
-                    }
-                }
-            }
+            HorizontalOptions = LayoutOptions.Fill,
+            Content = reportTypeButtons
         };
 
         var nameInput = new Entry
@@ -840,6 +987,7 @@ public partial class MainPage
             BackgroundColor = Colors.Transparent,
             HorizontalOptions = LayoutOptions.Fill
         };
+        PrepareInputField(nameInput);
         nameInput.TextChanged += (_, e) => vm.ItemTitle = e.NewTextValue;
 
         var categoryPicker = new Picker
@@ -851,6 +999,7 @@ public partial class MainPage
             BackgroundColor = Colors.Transparent,
             HorizontalOptions = LayoutOptions.Fill
         };
+        PrepareInputField(categoryPicker);
         categoryPicker.SelectedIndexChanged += (_, _) =>
         {
             if (categoryPicker.SelectedItem is string cat)
@@ -865,8 +1014,20 @@ public partial class MainPage
             TextColor = Color.FromArgb(FigmaTextDark),
             PlaceholderColor = Color.FromArgb(FigmaTextMuted),
             BackgroundColor = Colors.Transparent,
-            HeightRequest = 75
+            HeightRequest = 75,
+            Margin = 0
         };
+#if WINDOWS
+        descEditor.HandlerChanged += (_, _) =>
+        {
+            if (descEditor.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.TextBox nativeEditor)
+            {
+                nativeEditor.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                nativeEditor.Padding = new Microsoft.UI.Xaml.Thickness(0);
+                nativeEditor.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            }
+        };
+#endif
         descEditor.TextChanged += (_, e) => vm.Description = e.NewTextValue;
 
         var placeInput = new Entry
@@ -878,6 +1039,7 @@ public partial class MainPage
             BackgroundColor = Colors.Transparent,
             HorizontalOptions = LayoutOptions.Fill
         };
+        PrepareInputField(placeInput);
         placeInput.TextChanged += (_, e) => vm.Location = e.NewTextValue;
 
         var datePicker = new DatePicker
@@ -888,6 +1050,7 @@ public partial class MainPage
             BackgroundColor = Colors.Transparent,
             HorizontalOptions = LayoutOptions.Fill
         };
+        PrepareInputField(datePicker);
         datePicker.DateSelected += (_, e) => vm.Date = e.NewDate;
 
         var photoBox = new Border
@@ -921,20 +1084,16 @@ public partial class MainPage
 
         var body = new VerticalStackLayout
         {
-            Spacing = 13,
+            Spacing = 12,
+            HorizontalOptions = LayoutOptions.Fill,
             Children =
             {
                 titleRow,
                 typeCapsule,
 
-                FigmaFieldLabel("Item name *"),
-                FigmaInputBox("🏷", nameInput),
-
-                FigmaFieldLabel("Category *"),
-                FigmaInputBoxWithSuffix("📁", categoryPicker, Text("⌄", 14, false, FigmaTextMuted)),
-
-                FigmaFieldLabel("Description *"),
-                new VerticalStackLayout
+                ReportField("Item name *", FigmaInputBox("🏷", nameInput)),
+                ReportField("Category *", FigmaInputBoxWithSuffix("📁", categoryPicker, Text("⌄", 14, false, FigmaTextMuted))),
+                ReportField("Description *", new VerticalStackLayout
                 {
                     Spacing = 4,
                     Children =
@@ -945,21 +1104,15 @@ public partial class MainPage
                             Stroke = Color.FromArgb(FigmaBorder),
                             StrokeThickness = 1,
                             StrokeShape = new RoundRectangle { CornerRadius = 10 },
-                            Padding = 10,
+                            Padding = new Thickness(12, 8),
                             Content = descEditor
                         },
                         Text("Used for matching - no AI involved.", 11, false, FigmaTextMuted)
                     }
-                },
-
-                FigmaFieldLabel("Place *"),
-                FigmaInputBox("📍", placeInput),
-
-                FigmaFieldLabel("Date *"),
-                FigmaInputBoxWithSuffix("📅", datePicker, Text("⌄", 14, false, FigmaTextMuted)),
-
-                FigmaFieldLabel("Photo (optional)"),
-                photoBox,
+                }),
+                ReportField("Place *", FigmaInputBox("📍", placeInput)),
+                ReportField("Date *", FigmaInputBoxWithSuffix("📅", datePicker, Text("⌄", 14, false, FigmaTextMuted))),
+                ReportField("Photo (optional)", photoBox),
 
                 infoPill,
 
@@ -1224,6 +1377,7 @@ public partial class MainPage
                 FigmaPrimaryButton("📞  Contact securely", () => vm.ContactSecurelyCommand.Execute(null))
             }
         };
+        ArrangeGridColumns(actionsGrid);
 
         var body = new VerticalStackLayout
         {
@@ -1234,12 +1388,27 @@ public partial class MainPage
                 photoContainer,
                 infoCard,
                 reporterCard,
-                matchesBanner,
-                actionsGrid
+                matchesBanner
             }
         };
 
-        return Scroll(body);
+        ArrangeGridColumns(body);
+        var detailsPage = new Grid
+        {
+            RowDefinitions =
+            {
+                new RowDefinition { Height = GridLength.Star },
+                new RowDefinition { Height = GridLength.Auto }
+            }
+        };
+        detailsPage.Add(Scroll(body), 0, 0);
+        detailsPage.Add(new Border
+        {
+            BackgroundColor = Color.FromArgb("#F3F5FA"),
+            Padding = new Thickness(16, 8, 16, 12),
+            Content = actionsGrid
+        }, 0, 1);
+        return detailsPage;
     }
 
     // ==========================================
@@ -1557,7 +1726,34 @@ public partial class MainPage
             }
         };
 
+        ArrangeGridColumns(body);
         return Scroll(body);
+    }
+
+    private static void ArrangeGridColumns(View view)
+    {
+        if (view is Grid grid)
+        {
+            if (grid.ColumnDefinitions.Count > 1 &&
+                grid.Children.Count > 1 &&
+                grid.Children.Count <= grid.ColumnDefinitions.Count)
+            {
+                for (var column = 0; column < grid.Children.Count; column++)
+                    grid.SetColumn(grid.Children[column], column);
+            }
+
+            foreach (var child in grid.Children.OfType<View>())
+                ArrangeGridColumns(child);
+            return;
+        }
+
+        if (view is Border border && border.Content is View borderContent)
+            ArrangeGridColumns(borderContent);
+        else if (view is Layout layout)
+        {
+            foreach (var child in layout.Children.OfType<View>())
+                ArrangeGridColumns(child);
+        }
     }
 
     // ==========================================
@@ -1910,6 +2106,7 @@ public partial class MainPage
             }
         };
 
+        ArrangeGridColumns(body);
         return Scroll(body);
     }
 
@@ -2232,6 +2429,7 @@ public partial class MainPage
         body.Add(new ScrollView { Content = messagesList }, 0, 3);
         body.Add(inputBar, 0, 4);
 
+        ArrangeGridColumns(body);
         return body;
     }
 
@@ -2242,170 +2440,197 @@ public partial class MainPage
     {
         var vm = ViewModel.Profile;
 
+        // Modern Blue Banner Header
         var blueBanner = new Border
         {
             BackgroundColor = Color.FromArgb(FigmaBlue),
             StrokeThickness = 0,
-            Padding = new Thickness(16, 24, 16, 20),
+            Padding = new Thickness(16, 32, 16, 28),
             Content = new VerticalStackLayout
             {
                 HorizontalOptions = LayoutOptions.Center,
-                Spacing = 6,
+                Spacing = 12,
+                VerticalOptions = LayoutOptions.Center,
                 Children =
                 {
                     new Border
                     {
-                        WidthRequest = 66,
-                        HeightRequest = 66,
+                        WidthRequest = 76,
+                        HeightRequest = 76,
                         Stroke = Colors.White,
-                        StrokeThickness = 2,
-                        StrokeShape = new RoundRectangle { CornerRadius = 33 },
+                        StrokeThickness = 3,
+                        StrokeShape = new RoundRectangle { CornerRadius = 38 },
+                        BackgroundColor = Color.FromArgb(FigmaLightBlue),
                         Content = new Image
                         {
                             Source = "arielle_avatar.jpg",
                             Aspect = Aspect.AspectFill,
-                            WidthRequest = 66,
-                            HeightRequest = 66
+                            WidthRequest = 76,
+                            HeightRequest = 76
                         }
                     },
-                    Text("Arielle T.", 18, true, "#FFFFFF"),
-                    Text("arielle@gmail.com", 11, false, FigmaLightBlue),
+                    Text("Arielle T.", 20, true, "#FFFFFF"),
+                    Text("arielle@gmail.com", 12, false, FigmaLightBlue),
                     new Border
                     {
-                        BackgroundColor = Colors.Transparent,
-                        Stroke = Colors.White,
-                        StrokeThickness = 1,
-                        StrokeShape = new RoundRectangle { CornerRadius = 14 },
-                        Padding = new Thickness(12, 3),
+                        BackgroundColor = Colors.White,
+                        Stroke = Color.FromArgb(FigmaBlue),
+                        StrokeThickness = 1.5,
+                        StrokeShape = new RoundRectangle { CornerRadius = 8 },
+                        Padding = new Thickness(16, 6),
                         HorizontalOptions = LayoutOptions.Center,
-                        Content = Text("< Edit Profile", 10, true, "#FFFFFF")
+                        Content = Text("✎ Edit Profile", 12, true, FigmaBlue)
                     }
                 }
             }
         };
+
+        // Stats Card - Improved spacing
+        var countersGrid = new Grid
+        {
+            ColumnDefinitions =
+            {
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Auto),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Auto),
+                new ColumnDefinition(GridLength.Star)
+            },
+            ColumnSpacing = 0
+        };
+        countersGrid.Add(new VerticalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center,
+            Spacing = 6,
+            Children =
+            {
+                Text("2", 22, true, FigmaBlue),
+                Text("Lost", 12, false, FigmaTextMuted)
+            }
+        }, 0, 0);
+        countersGrid.Add(new BoxView
+        {
+            WidthRequest = 1,
+            Color = Color.FromArgb(FigmaBorder),
+            Margin = new Thickness(0, 8)
+        }, 1, 0);
+        countersGrid.Add(new VerticalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center,
+            Spacing = 6,
+            Children =
+            {
+                Text("1", 22, true, FigmaGreen),
+                Text("Found", 12, false, FigmaTextMuted)
+            }
+        }, 2, 0);
+        countersGrid.Add(new BoxView
+        {
+            WidthRequest = 1,
+            Color = Color.FromArgb(FigmaBorder),
+            Margin = new Thickness(0, 8)
+        }, 3, 0);
+        countersGrid.Add(new VerticalStackLayout
+        {
+            HorizontalOptions = LayoutOptions.Center,
+            Spacing = 6,
+            Children =
+            {
+                Text("1", 22, true, Orange),
+                Text("Reunited", 12, false, FigmaTextMuted)
+            }
+        }, 4, 0);
 
         var countersCard = new Border
         {
             BackgroundColor = Colors.White,
             Stroke = Color.FromArgb(FigmaBorder),
-            StrokeThickness = 1,
-            StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(0, 12),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Padding = new Thickness(0, 18),
             Margin = new Thickness(16, -16, 16, 0),
-            Content = new Grid
-            {
-                ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) },
-                Children =
-                {
-                    new VerticalStackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.Center,
-                        Spacing = 1,
-                        Children =
-                        {
-                            Text("2", 18, true, FigmaTextDark),
-                            Text("Lost", 11, false, FigmaTextMuted)
-                        }
-                    },
-                    new VerticalStackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.Center,
-                        Spacing = 1,
-                        Children =
-                        {
-                            Text("1", 18, true, FigmaTextDark),
-                            Text("Found", 11, false, FigmaTextMuted)
-                        }
-                    },
-                    new VerticalStackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.Center,
-                        Spacing = 1,
-                        Children =
-                        {
-                            Text("1", 18, true, FigmaTextDark),
-                            Text("Reunited", 11, false, FigmaTextMuted)
-                        }
-                    }
-                }
-            }
+            Shadow = new Shadow { Brush = Colors.Black, Offset = new Point(0, 2), Opacity = 0.06f, Radius = 6 },
+            Content = countersGrid
         };
 
+        // My Declarations - Modern card style
         var myDeclarationsCard = new Border
         {
             BackgroundColor = Colors.White,
             Stroke = Color.FromArgb(FigmaBorder),
-            StrokeThickness = 1,
-            StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(12, 6),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Padding = new Thickness(14, 8),
+            Margin = new Thickness(16, 0),
+            Shadow = new Shadow { Brush = Colors.Black, Offset = new Point(0, 1), Opacity = 0.05f, Radius = 4 },
             Content = new VerticalStackLayout
             {
-                Spacing = 2,
+                Spacing = 0,
                 Children =
                 {
                     FigmaProfileRow("🎒 My Lost Items", "2", Color.FromArgb(FigmaLightBlue), FigmaBlue, () => vm.ViewLostItemsCommand.Execute(null)),
-                    new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder) },
+                    new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder), Margin = new Thickness(0, 6) },
                     FigmaProfileRow("📦 My Found Items", "1", Color.FromArgb(FigmaGreenBg), FigmaGreen, () => vm.ViewFoundItemsCommand.Execute(null))
                 }
             }
         };
 
+        // Matches Card
         var matchesCard = new Border
         {
             BackgroundColor = Colors.White,
             Stroke = Color.FromArgb(FigmaBorder),
-            StrokeThickness = 1,
-            StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(12, 6),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Padding = new Thickness(14, 8),
+            Margin = new Thickness(16, 0),
+            Shadow = new Shadow { Brush = Colors.Black, Offset = new Point(0, 1), Opacity = 0.05f, Radius = 4 },
             Content = FigmaProfileRow("⚡ My Matches", "2", Color.FromArgb("#FFF2E6"), Orange, () => vm.ViewMatchesCommand.Execute(null))
         };
 
+        // Settings Card
         var settingsCard = new Border
         {
             BackgroundColor = Colors.White,
             Stroke = Color.FromArgb(FigmaBorder),
-            StrokeThickness = 1,
-            StrokeShape = new RoundRectangle { CornerRadius = 12 },
-            Padding = new Thickness(12, 6),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 14 },
+            Padding = new Thickness(14, 8),
+            Margin = new Thickness(16, 0),
+            Shadow = new Shadow { Brush = Colors.Black, Offset = new Point(0, 1), Opacity = 0.05f, Radius = 4 },
             Content = new VerticalStackLayout
             {
-                Spacing = 2,
+                Spacing = 0,
                 Children =
                 {
                     FigmaSettingsRow("⚙ Notifications", () => vm.ViewNotificationsCommand.Execute(null)),
-                    new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder) },
+                    new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder), Margin = new Thickness(0, 6) },
                     FigmaSettingsRow("🔒 Privacy & Security", () => DisplayAlert("Privacy & Security", "All data is end-to-end secured. Your contact details remain confidential.", "OK")),
-                    new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder) },
+                    new BoxView { HeightRequest = 1, Color = Color.FromArgb(FigmaBorder), Margin = new Thickness(0, 6) },
                     FigmaSettingsRow("💬 Help & Support", () => DisplayAlert("Help & Support", "SaveIt facilitates safe lost & found reporting with strict 4-criteria matching.", "OK"))
                 }
             }
         };
 
-        var logoutBtn = new Button
-        {
-            Text = "Log Out",
-            FontSize = 13,
-            FontFamily = "OpenSansSemibold",
-            TextColor = Color.FromArgb(FigmaRed),
-            BackgroundColor = Colors.White,
-            BorderColor = Color.FromArgb(FigmaRed),
-            BorderWidth = 1,
-            CornerRadius = 10,
-            HeightRequest = 44,
-            Command = vm.LogoutCommand
-        };
+        // Logout Button - Improved styling
+        var logoutBtn = FigmaOutlinedButton("Log Out", () => vm.LogoutCommand.Execute(null));
+        logoutBtn.TextColor = Color.FromArgb(FigmaRed);
+        logoutBtn.BorderColor = Color.FromArgb(FigmaRed);
+        logoutBtn.BackgroundColor = Color.FromArgb(FigmaRedBg);
+        logoutBtn.Margin = new Thickness(16, 0);
 
         var body = new VerticalStackLayout
         {
-            Spacing = 12,
+            Spacing = 14,
+            Padding = new Thickness(0, 0, 0, 24),
             Children =
             {
                 blueBanner,
                 countersCard,
                 new VerticalStackLayout
                 {
-                    Padding = new Thickness(16, 8, 16, 24),
-                    Spacing = 12,
+                    Padding = new Thickness(0, 16, 0, 0),
+                    Spacing = 14,
                     Children =
                     {
                         Text("MY DECLARATIONS", 10, true, FigmaTextMuted),
@@ -2423,6 +2648,7 @@ public partial class MainPage
             }
         };
 
+        ArrangeGridColumns(body);
         return new ScrollView { Content = body };
     }
 
@@ -2440,99 +2666,260 @@ public partial class MainPage
     private static Label FigmaFieldLabel(string text) => new()
     {
         Text = text,
-        FontSize = 12,
+        FontSize = 13,
         FontFamily = "OpenSansSemibold",
-        TextColor = Color.FromArgb(FigmaTextDark)
+        TextColor = Color.FromArgb(FigmaTextDark),
+        Margin = new Thickness(0, 4, 0, 6)
     };
 
-    private static Border FigmaInputBox(string icon, View field) => new()
+    private static VerticalStackLayout ReportField(string label, View field) => new()
     {
-        BackgroundColor = Colors.White,
-        Stroke = Color.FromArgb(FigmaBorder),
-        StrokeThickness = 1,
-        StrokeShape = new RoundRectangle { CornerRadius = 10 },
-        Padding = new Thickness(12, 0),
-        HeightRequest = 46,
-        Content = new HorizontalStackLayout
+        Spacing = 2,
+        HorizontalOptions = LayoutOptions.Fill,
+        Children =
         {
-            Spacing = 10,
-            Children = { Text(icon, 14, false, FigmaTextMuted), field }
+            new Label
+            {
+                Text = label,
+                FontSize = 11,
+                FontFamily = "OpenSansSemibold",
+                TextColor = Color.FromArgb(FigmaTextDark),
+                Margin = new Thickness(0, 0, 0, 2)
+            },
+            field
         }
     };
 
-    private static Border FigmaInputBoxWithSuffix(string icon, View field, View suffix) => new()
+    private static Label AuthErrorMessage(AuthViewModel viewModel)
     {
-        BackgroundColor = Colors.White,
-        Stroke = Color.FromArgb(FigmaBorder),
-        StrokeThickness = 1,
-        StrokeShape = new RoundRectangle { CornerRadius = 10 },
-        Padding = new Thickness(12, 0),
-        HeightRequest = 46,
-        Content = new Grid
+        var label = new Label
+        {
+            FontSize = 12,
+            TextColor = Color.FromArgb(FigmaRed),
+            IsVisible = false
+        };
+        label.SetBinding(Label.TextProperty, nameof(AuthViewModel.ErrorMessage));
+        label.SetBinding(IsVisibleProperty, nameof(AuthViewModel.HasError));
+        label.BindingContext = viewModel;
+        return label;
+    }
+
+    private static Border FigmaInputBox(string icon, View field, AuthViewModel? viewModel = null, string? invalidProperty = null)
+    {
+        var content = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star) },
+            ColumnSpacing = 12,
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Fill
+        };
+        content.Add(Text(icon, 16, false, FigmaTextMuted), 0, 0);
+        content.Add(PrepareInputField(field), 1, 0);
+        return ApplyInvalidState(new Border
+        {
+            BackgroundColor = Colors.White,
+            Stroke = Color.FromArgb(FigmaBorder),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 11 },
+            Padding = new Thickness(16, 8),
+            HeightRequest = 56,
+            Content = content
+        }, viewModel, invalidProperty);
+    }
+
+    private static Border FigmaInputBoxWithSuffix(
+        string icon,
+        View field,
+        View suffix,
+        AuthViewModel? viewModel = null,
+        string? invalidProperty = null)
+    {
+        var content = new Grid
         {
             ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
-            ColumnSpacing = 10,
-            Children = { Text(icon, 14, false, FigmaTextMuted), field, suffix }
-        }
-    };
-
-    private static Border FigmaInputBoxWithError(string icon, View field) => new()
-    {
-        BackgroundColor = Colors.White,
-        Stroke = Color.FromArgb(FigmaRed),
-        StrokeThickness = 1.5,
-        StrokeShape = new RoundRectangle { CornerRadius = 10 },
-        Padding = new Thickness(12, 0),
-        HeightRequest = 46,
-        Content = new HorizontalStackLayout
+            ColumnSpacing = 12,
+            VerticalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.Fill
+        };
+        content.Add(Text(icon, 16, false, FigmaTextMuted), 0, 0);
+        content.Add(PrepareInputField(field), 1, 0);
+        content.Add(suffix, 2, 0);
+        return ApplyInvalidState(new Border
         {
-            Spacing = 10,
-            Children = { Text(icon, 14, false, FigmaRed), field }
-        }
-    };
+            BackgroundColor = Colors.White,
+            Stroke = Color.FromArgb(FigmaBorder),
+            StrokeThickness = 1.5,
+            StrokeShape = new RoundRectangle { CornerRadius = 11 },
+            Padding = new Thickness(16, 8),
+            HeightRequest = 56,
+            Content = content
+        }, viewModel, invalidProperty);
+    }
 
-    private static Border FigmaInputBoxWithErrorWithSuffix(string icon, View field, View suffix) => new()
+    private static Border ApplyInvalidState(Border border, AuthViewModel? viewModel, string? invalidProperty)
     {
-        BackgroundColor = Colors.White,
-        Stroke = Color.FromArgb(FigmaRed),
-        StrokeThickness = 1.5,
-        StrokeShape = new RoundRectangle { CornerRadius = 10 },
-        Padding = new Thickness(12, 0),
-        HeightRequest = 46,
-        Content = new Grid
+        if (viewModel is null || string.IsNullOrWhiteSpace(invalidProperty))
+            return border;
+
+        border.BindingContext = viewModel;
+        border.Triggers.Add(new DataTrigger(typeof(Border))
+        {
+            Binding = new Binding(invalidProperty),
+            Value = true,
+            Setters =
+            {
+                new Setter { Property = BackgroundColorProperty, Value = Color.FromArgb(FigmaRedBg) },
+                new Setter { Property = Border.StrokeProperty, Value = Color.FromArgb(FigmaRed) },
+                new Setter { Property = Border.StrokeThicknessProperty, Value = 2d }
+            }
+        });
+        return border;
+    }
+
+    private static Border FigmaInputBoxWithError(string icon, View field)
+    {
+        var content = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star) },
+            ColumnSpacing = 12,
+            VerticalOptions = LayoutOptions.Center
+        };
+        content.Add(Text(icon, 16, false, FigmaRed), 0, 0);
+        content.Add(PrepareInputField(field), 1, 0);
+        return new Border
+        {
+            BackgroundColor = Color.FromArgb(FigmaRedBg),
+            Stroke = Color.FromArgb(FigmaRed),
+            StrokeThickness = 2,
+            StrokeShape = new RoundRectangle { CornerRadius = 11 },
+            Padding = new Thickness(14, 6),
+            HeightRequest = 52,
+            Content = content
+        };
+    }
+
+    private static Border FigmaInputBoxWithErrorWithSuffix(string icon, View field, View suffix)
+    {
+        var content = new Grid
         {
             ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) },
-            ColumnSpacing = 10,
-            Children = { Text(icon, 14, false, FigmaRed), field, suffix }
-        }
-    };
-
-    private static Border FigmaInputBoxFocused(string icon, View field) => new()
-    {
-        BackgroundColor = Colors.White,
-        Stroke = Color.FromArgb(FigmaBlue),
-        StrokeThickness = 2,
-        StrokeShape = new RoundRectangle { CornerRadius = 10 },
-        Padding = new Thickness(12, 0),
-        HeightRequest = 46,
-        Content = new HorizontalStackLayout
+            ColumnSpacing = 12,
+            VerticalOptions = LayoutOptions.Center
+        };
+        content.Add(Text(icon, 16, false, FigmaRed), 0, 0);
+        content.Add(PrepareInputField(field), 1, 0);
+        content.Add(suffix, 2, 0);
+        return new Border
         {
-            Spacing = 10,
-            Children = { Text(icon, 14, false, FigmaBlue), field }
+            BackgroundColor = Color.FromArgb(FigmaRedBg),
+            Stroke = Color.FromArgb(FigmaRed),
+            StrokeThickness = 2,
+            StrokeShape = new RoundRectangle { CornerRadius = 11 },
+            Padding = new Thickness(14, 6),
+            HeightRequest = 52,
+            Content = content
+        };
+    }
+
+    private static Border FigmaInputBoxFocused(string icon, View field)
+    {
+        var content = new Grid
+        {
+            ColumnDefinitions = { new ColumnDefinition(GridLength.Auto), new ColumnDefinition(GridLength.Star) },
+            ColumnSpacing = 12,
+            VerticalOptions = LayoutOptions.Center
+        };
+        content.Add(Text(icon, 16, false, FigmaBlue), 0, 0);
+        content.Add(PrepareInputField(field), 1, 0);
+        return new Border
+        {
+            BackgroundColor = Colors.White,
+            Stroke = Color.FromArgb(FigmaBlue),
+            StrokeThickness = 2,
+            StrokeShape = new RoundRectangle { CornerRadius = 11 },
+            Padding = new Thickness(14, 6),
+            HeightRequest = 52,
+            Content = content
+        };
+    }
+
+    private static View PrepareInputField(View field)
+    {
+        if (field is Entry entry)
+        {
+            entry.BackgroundColor = Colors.Transparent;
+            entry.HorizontalOptions = LayoutOptions.Fill;
+            entry.VerticalOptions = LayoutOptions.Center;
+            entry.HeightRequest = 36;
+            entry.Margin = 0;
+#if WINDOWS
+            entry.HandlerChanged += (_, _) =>
+            {
+                if (entry.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.TextBox nativeEntry)
+                {
+                    nativeEntry.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                    nativeEntry.Padding = new Microsoft.UI.Xaml.Thickness(0);
+                    nativeEntry.VerticalContentAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center;
+                    nativeEntry.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                }
+            };
+#endif
         }
-    };
+        else if (field is Picker picker)
+        {
+            picker.BackgroundColor = Colors.Transparent;
+            picker.HorizontalOptions = LayoutOptions.Fill;
+            picker.VerticalOptions = LayoutOptions.Center;
+            picker.HeightRequest = 36;
+            picker.Margin = 0;
+#if WINDOWS
+            picker.HandlerChanged += (_, _) =>
+            {
+                if (picker.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.ComboBox nativePicker)
+                {
+                    nativePicker.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                    nativePicker.Padding = new Microsoft.UI.Xaml.Thickness(0);
+                    nativePicker.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                }
+            };
+#endif
+        }
+        else if (field is DatePicker datePicker)
+        {
+            datePicker.BackgroundColor = Colors.Transparent;
+            datePicker.HorizontalOptions = LayoutOptions.Fill;
+            datePicker.VerticalOptions = LayoutOptions.Center;
+            datePicker.HeightRequest = 36;
+            datePicker.Margin = 0;
+#if WINDOWS
+            datePicker.HandlerChanged += (_, _) =>
+            {
+                if (datePicker.Handler?.PlatformView is Microsoft.UI.Xaml.Controls.CalendarDatePicker nativeDatePicker)
+                {
+                    nativeDatePicker.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                    nativeDatePicker.Padding = new Microsoft.UI.Xaml.Thickness(0);
+                    nativeDatePicker.Background = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                }
+            };
+#endif
+        }
+
+        return field;
+    }
 
     private static Button FigmaPrimaryButton(string text, Action action)
     {
         var btn = new Button
         {
             Text = text,
-            FontSize = 14,
+            FontSize = 15,
             FontFamily = "OpenSansSemibold",
             TextColor = Colors.White,
             BackgroundColor = Color.FromArgb(FigmaBlue),
-            CornerRadius = 10,
-            HeightRequest = 46
+            CornerRadius = 11,
+            HeightRequest = 52,
+            Padding = new Thickness(14, 8),
+            CharacterSpacing = 0.3
         };
         btn.Clicked += (_, _) => action();
         return btn;
@@ -2543,12 +2930,13 @@ public partial class MainPage
         var btn = new Button
         {
             Text = text,
-            FontSize = 14,
+            FontSize = 15,
             FontFamily = "OpenSansSemibold",
-            TextColor = Color.FromArgb("#5D7CA6"),
-            BackgroundColor = Color.FromArgb("#D5E4F9"),
-            CornerRadius = 10,
-            HeightRequest = 46
+            TextColor = Color.FromArgb("#6B8CC3"),
+            BackgroundColor = Color.FromArgb("#E6EFF9"),
+            CornerRadius = 11,
+            HeightRequest = 52,
+            Padding = new Thickness(14, 8)
         };
         btn.Clicked += (_, _) => action();
         return btn;
@@ -2559,14 +2947,15 @@ public partial class MainPage
         var btn = new Button
         {
             Text = text,
-            FontSize = 13,
+            FontSize = 14,
             FontFamily = "OpenSansSemibold",
             TextColor = Color.FromArgb(FigmaTextDark),
             BackgroundColor = Colors.White,
             BorderColor = Color.FromArgb(FigmaBorder),
-            BorderWidth = 1,
-            CornerRadius = 10,
-            HeightRequest = 46
+            BorderWidth = 1.5,
+            CornerRadius = 11,
+            HeightRequest = 52,
+            Padding = new Thickness(14, 8)
         };
         btn.Clicked += (_, _) => action();
         return btn;
